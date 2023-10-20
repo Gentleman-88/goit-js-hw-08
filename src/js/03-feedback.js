@@ -5,16 +5,6 @@ const email = document.querySelector('input[name="email"]');
 const messageArea = document.querySelector('textarea[name="message"]');
 const btnSubmit = document.querySelector('button[type="submit"]');
 
-form.addEventListener('input', function (e) {
-    const formData = {
-        email: email.value,
-        message: messageArea.value
-    }
-    localStorage.setItem("feedback-form-state", JSON.stringify(formData));
-    console.log(formData);
-});
-
-
 function restoreFormData() {
   const savedFormData = localStorage.getItem("feedback-form-state");
 
@@ -32,8 +22,31 @@ const throttledInputHandler = throttle(function () {
     email: email.value,
     message: messageArea.value
   };
-
+console.log(formData)
   localStorage.setItem("feedback-form-state", JSON.stringify(formData));
 }, 500);
 
 form.addEventListener('input', throttledInputHandler);
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  localStorage.removeItem("feedback-form-state");
+
+  const formData = {
+    email: email.value,
+    message: messageArea.value
+  };
+  console.log('Form submitted with values:');
+  console.log(formData);
+
+  email.value = "";
+  messageArea.value = "";
+});
+
+
+
+
+
+
+
